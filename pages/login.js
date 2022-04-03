@@ -23,7 +23,7 @@ export default function Login() {
             router.events.off('routeChangeComplete', handleComplete);
             router.events.off('routeChangeError', handleComplete);
         };
-    });
+    }, [router]);
 
     const handleOnChangeEmail = e => {
         const email = e.target.value;
