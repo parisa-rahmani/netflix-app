@@ -32,7 +32,7 @@ export default function Home({
                 <title>NETFLIX</title>
             </Head>
             <div className={styles.main}>
-                <Navbar username={'parisa.rahmani'} />
+                <Navbar />
                 <Banner
                     title={'my favourite movie'}
                     subTitle={'interested'}
