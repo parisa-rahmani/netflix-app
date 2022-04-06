@@ -43,6 +43,7 @@ export default function Video({ video }) {
                     height="390"
                     src={`http://www.youtube.com/embed/${router.query.videoId}?enablejsapi=1&controls=0&origin=http://example.com`}
                     frameborder="0"
+                    className={styles.videoPlayer}
                 ></iframe>
 
                 {/* <div className={styles.likeDislikeBtnWrapper}>
