@@ -34,8 +34,9 @@ export default function Home({
             <div className={styles.main}>
                 <Navbar />
                 <Banner
-                    title={'my favourite movie'}
-                    subTitle={'interested'}
+                    videoId="4zH5iYM4wJo"
+                    title="Clifford the red dog"
+                    subTitle="a very cute dog"
                     imgUrl={'/static/clifford.webp'}
                 />
                 <div className={styles.sectionWrapper}>
