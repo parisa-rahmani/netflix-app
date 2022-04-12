@@ -15,10 +15,17 @@ export const getCommonVideos = async url => {
         }
         return data?.items.map(item => {
             const id = item?.id?.videoId || item.id;
+            const snippet = item.snippet;
             return {
                 id,
-                title: item.snippet.title,
-                imgUrl: item.snippet.thumbnails.high.url,
+                title: snippet.title,
+                imgUrl: snippet.thumbnails.high.url,
+                description: snippet.description,
+                publishTime: snippet.publishedAt,
+                channelTitle: snippet.channelTitle,
+                statistics: item.statistics
+                    ? item.statistics.viewCount
+                    : { viewCount: 0 },
             };
         });
     } catch (error) {
@@ -34,5 +41,10 @@ export const getVideos = searchQuery => {
 
 export const getPopularVideos = () => {
     const URL = `videos?part=snippet%2CcontentDetails&chart=mostPopular&regionCode=US`;
+    return getCommonVideos(URL);
+};
+
+export const getVideoById = videoId => {
+    const URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
     return getCommonVideos(URL);
 };

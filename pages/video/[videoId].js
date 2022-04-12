@@ -2,19 +2,14 @@ import React from 'react';
 import styles from '../../styles/video.module.css';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/navbar/navbar';
+import { getVideoById } from '../../utils/getVideos';
 
-export async function getStaticProps() {
-    const video = {
-        title: 'hi',
-        publishTime: '11111',
-        description: 'ohhhhhghfjdkhslhdlk',
-        channelTitle: 'ieurwiroe',
-        viewCount: '9000',
-    };
+export async function getStaticProps({ params }) {
+    const video = await getVideoById(params.videoId);
 
     return {
         props: {
-            video,
+            video: video.length > 0 ? video[0] : {},
         },
         revalidate: 10, // In seconds
     };
@@ -26,12 +21,18 @@ export async function getStaticPaths() {
         params: { videoId },
     }));
 
-    return { paths, fallback: true };
+    return { paths, fallback: 'blocking' };
 }
 
 export default function Video({ video }) {
     const router = useRouter();
-    const { title, description, viewCount, publishTime, channelTitle } = video;
+    const {
+        title,
+        description,
+        publishTime,
+        channelTitle,
+        statistics: viewCount,
+    } = video;
     return (
         <div className={styles.container}>
             <Navbar />
