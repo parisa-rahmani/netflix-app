@@ -11,17 +11,8 @@ import {
 import { verifyToken } from '../utils/verifyToken';
 
 export async function getServerSideProps(context) {
-    const token = context.req ? context.req.cookies.token : null;
+    const token = context.req ? context.req.cookies?.token : null;
     const userId = await verifyToken(token);
-    if (!userId) {
-        return {
-            props: {},
-            redirect: {
-                destination: '/login',
-                permanent: false,
-            },
-        };
-    }
     const disneyVideos = await getVideos('disney trailers');
     const travelVideos = await getVideos('travel');
     const productivityVideos = await getVideos('productivity');
@@ -43,7 +34,7 @@ export default function Home({
     travelVideos,
     productivityVideos,
     popularVideos,
-    watchedItAgain,
+    watchedItAgain = [],
 }) {
     return (
         <div className={styles.container}>

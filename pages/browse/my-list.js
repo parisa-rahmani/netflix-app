@@ -6,18 +6,8 @@ import { getMyListVideos } from '../../utils/getVideos';
 import { verifyToken } from '../../utils/verifyToken';
 
 export async function getServerSideProps(context) {
-    const token = context.req ? context.req.cookies.token : null;
+    const token = context.req ? context.req.cookies?.token : null;
     const userId = await verifyToken(token);
-    if (!userId) {
-        return {
-            props: {},
-            redirect: {
-                destination: '/login',
-                permanent: false,
-            },
-        };
-    }
-
     const videos = await getMyListVideos(token, userId);
 
     return {
