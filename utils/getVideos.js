@@ -1,3 +1,5 @@
+import { getWatchedVideos } from './hasura';
+
 export const getCommonVideos = async url => {
     try {
         const BASE_URL = 'https://youtube.googleapis.com/youtube/v3';
@@ -19,7 +21,7 @@ export const getCommonVideos = async url => {
             return {
                 id,
                 title: snippet.title,
-                imgUrl: snippet.thumbnails.high.url,
+                imgUrl: `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
                 description: snippet.description,
                 publishTime: snippet.publishedAt,
                 channelTitle: snippet.channelTitle,
@@ -47,4 +49,14 @@ export const getPopularVideos = () => {
 export const getVideoById = videoId => {
     const URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
     return getCommonVideos(URL);
+};
+
+export const getWatchedItAgainVideos = async (token, userId) => {
+    const videos = await getWatchedVideos(token, userId);
+    return videos?.map(video => {
+        return {
+            id: video.videoId,
+            imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+        };
+    });
 };

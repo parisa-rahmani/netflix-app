@@ -1,3 +1,23 @@
+export async function getWatchedVideos(token, userId) {
+    const operationsDoc = `
+query getWatchedVideo($userId: String!) {
+  stats(where: {
+    userId: {_eq: $userId}, 
+    watched: {_eq: true}, 
+  }) {
+      videoId
+  }
+}
+`;
+    const response = await queryHasuraGQL(
+        operationsDoc,
+        'getWatchedVideo',
+        { userId },
+        token
+    );
+    return response?.data?.stats;
+}
+
 export async function insertVideoStats(
     token,
     { favourited, watched, userId, videoId }
