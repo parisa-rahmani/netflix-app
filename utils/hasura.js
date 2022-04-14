@@ -1,3 +1,80 @@
+export async function insertVideoStats(
+    token,
+    { favourited, watched, userId, videoId }
+) {
+    const operationsDoc = `
+    mutation insertStats($favourited: Int!, $userId: String!, $watched: Boolean!, $videoId: String!) {
+      insert_stats_one(object: {
+        favourited: $favourited, 
+        userId: $userId, 
+        watched: $watched, 
+        videoId: $videoId
+      }) {
+          favourited
+          userId
+      }
+    }
+  `;
+    const response = await queryHasuraGQL(
+        operationsDoc,
+        'insertStats',
+        { favourited, watched, userId, videoId },
+        token
+    );
+    return response;
+}
+
+export async function updateVideoStats(
+    token,
+    { favourited, watched, userId, videoId }
+) {
+    const operationsDoc = `
+    mutation updateStats($favourited: Int!, $userId: String!, $watched: Boolean!, $videoId: String!) {
+      update_stats(
+        _set: {watched: $watched, favourited: $favourited}, 
+        where: {
+          userId: {_eq: $userId}, 
+          videoId: {_eq: $videoId}
+        }) {
+        returning {
+          favourited,
+          userId,
+          watched,
+          videoId
+        }
+      }
+    }
+    `;
+    const response = await queryHasuraGQL(
+        operationsDoc,
+        'updateStats',
+        { favourited, watched, userId, videoId },
+        token
+    );
+    return response;
+}
+
+export async function findVideoById(token, userId, videoId) {
+    const operationsDoc = `
+    query findVideoById($userId: String!, $videoId: String!) {
+      stats(where: {userId: {_eq: $userId}, videoId: {_eq: $videoId}}) {
+        favourited
+        id
+        userId
+        videoId
+        watched
+      }
+    }
+    `;
+    const response = await queryHasuraGQL(
+        operationsDoc,
+        'findVideoById',
+        { userId, videoId },
+        token
+    );
+    return response?.data?.stats;
+}
+
 export async function createNewUser(token, metaData) {
     const { issuer, publicAddress, email } = metaData;
     const operationsDoc = `

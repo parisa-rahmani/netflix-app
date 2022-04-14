@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../../styles/video.module.css';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/navbar/navbar';
 import { getVideoById } from '../../utils/getVideos';
+import Like from '../../components/icons/like';
+import DisLike from '../../components/icons/dislike';
 
-export async function getStaticProps({ params }) {
-    const video = await getVideoById(params.videoId);
+export async function getStaticProps(context) {
+    const videoArray = await getVideoById(context.params.videoId);
 
     return {
         props: {
-            video: video.length > 0 ? video[0] : {},
+            video: videoArray.length > 0 ? videoArray[0] : {},
         },
         revalidate: 10, // In seconds
     };
@@ -25,6 +27,9 @@ export async function getStaticPaths() {
 }
 
 export default function Video({ video }) {
+    console.log('🚀 ~ file: [videoId].js ~ line 30 ~ Video ~ video', video);
+    const [toggleLike, setToggleLike] = useState(false);
+    const [toggleDisLike, setToggleDisLike] = useState(false);
     const router = useRouter();
     const {
         title,
@@ -33,6 +38,63 @@ export default function Video({ video }) {
         channelTitle,
         statistics: viewCount,
     } = video;
+    const videoId = router.query.videoId;
+
+    useEffect(() => {
+        const getVideo = async () => {
+            const response = await fetch(`/api/stats?videoId=${videoId}`, {
+                method: 'GET',
+            });
+            const result = await response.json();
+            console.log(
+                '🚀 ~ file: [videoId].js ~ line 48 ~ getVideo ~ data',
+                result
+            );
+            if (result?.data?.length > 0) {
+                const favourited = result.data[0].favourited;
+                if (favourited === 1) {
+                    setToggleLike(true);
+                } else {
+                    setToggleDisLike(true);
+                }
+            }
+        };
+        getVideo();
+    }, []);
+
+    const runRatingService = async favourited => {
+        try {
+            const response = await fetch('/api/stats', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    videoId,
+                    favourited,
+                }),
+            });
+            console.log(await response.json());
+        } catch (error) {}
+    };
+
+    const handleToggleDislike = async () => {
+        setToggleDisLike(!toggleDisLike);
+        setToggleLike(toggleDisLike);
+
+        const val = !toggleDisLike;
+        const favourited = val ? 0 : 1;
+        const response = await runRatingService(favourited);
+    };
+
+    const handleToggleLike = async () => {
+        const val = !toggleLike;
+        setToggleLike(val);
+        setToggleDisLike(toggleLike);
+
+        const favourited = val ? 1 : 0;
+        const response = await runRatingService(favourited);
+    };
     return (
         <div className={styles.container}>
             <Navbar />
@@ -42,25 +104,25 @@ export default function Video({ video }) {
                     type="text/html"
                     width="640"
                     height="390"
-                    src={`http://www.youtube.com/embed/${router.query.videoId}?enablejsapi=1&controls=0&origin=http://example.com`}
+                    src={`http://www.youtube.com/embed/${videoId}?enablejsapi=1&controls=0&origin=http://example.com`}
                     frameborder="0"
                     className={styles.videoPlayer}
                 ></iframe>
 
-                {/* <div className={styles.likeDislikeBtnWrapper}>
-                <div className={styles.likeBtnWrapper}>
-                    <button onClick={handleToggleLike}>
+                <div className={styles.likeDislikeBtnWrapper}>
+                    <div className={styles.likeBtnWrapper}>
+                        <button onClick={handleToggleLike}>
+                            <div className={styles.btnWrapper}>
+                                <Like selected={toggleLike} />
+                            </div>
+                        </button>
+                    </div>
+                    <button onClick={handleToggleDislike}>
                         <div className={styles.btnWrapper}>
-                            <Like selected={toggleLike} />
+                            <DisLike selected={toggleDisLike} />
                         </div>
                     </button>
                 </div>
-                <button onClick={handleToggleDislike}>
-                    <div className={styles.btnWrapper}>
-                        <DisLike selected={toggleDisLike} />
-                    </div>
-                </button>
-            </div> */}
                 <div className={styles.modalBody}>
                     <div className={styles.modalBodyContent}>
                         <div className={styles.col1}>
