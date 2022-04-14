@@ -1,3 +1,20 @@
+export async function getFvouritedVideos(token, userId) {
+    const operationsDoc = `
+  query favouritedVideos($userId: String!) {
+    stats(where: {favourited: {_eq: 1}, userId: {_eq: $userId}}) {
+      videoId
+    }
+  }
+  `;
+    const response = await queryHasuraGQL(
+        operationsDoc,
+        'favouritedVideos',
+        { userId },
+        token
+    );
+    return response?.data?.stats;
+}
+
 export async function getWatchedVideos(token, userId) {
     const operationsDoc = `
 query getWatchedVideo($userId: String!) {

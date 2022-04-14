@@ -1,4 +1,4 @@
-import { getWatchedVideos } from './hasura';
+import { getFvouritedVideos, getWatchedVideos } from './hasura';
 
 export const getCommonVideos = async url => {
     try {
@@ -53,6 +53,15 @@ export const getVideoById = videoId => {
 
 export const getWatchedItAgainVideos = async (token, userId) => {
     const videos = await getWatchedVideos(token, userId);
+    return videos?.map(video => {
+        return {
+            id: video.videoId,
+            imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+        };
+    });
+};
+export const getMyListVideos = async (token, userId) => {
+    const videos = await getFvouritedVideos(token, userId);
     return videos?.map(video => {
         return {
             id: video.videoId,

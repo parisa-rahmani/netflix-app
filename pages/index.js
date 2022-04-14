@@ -65,7 +65,7 @@ export default function Home({
                         data={disneyVideos}
                     />
                     <SectionCard
-                        title="Watched It Again"
+                        title="Watch It Again"
                         size={'small'}
                         data={watchedItAgain}
                     />

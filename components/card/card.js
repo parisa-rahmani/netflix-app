@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 export default function Card({
     imgUrl = '/static/movie.jpeg',
     size = 'medium',
+    shouldScale = true,
 }) {
     const [imgSrc, setImgSrc] = useState(imgUrl);
     const classMap = {
@@ -17,10 +18,11 @@ export default function Card({
     const handleOnError = () => {
         setImgSrc('/static/movie.jpeg');
     };
+    const shouldHover = shouldScale && { whileHover: { scale: 1.1 } };
     return (
         <div className={styles.container}>
             <motion.div
-                whileHover={{ scale: 1.1 }}
+                {...shouldHover}
                 className={`${classMap[size]} ${styles.imgMotionWrapper} `}
             >
                 <Image
