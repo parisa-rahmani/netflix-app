@@ -9,30 +9,40 @@ export default function Navbar() {
     const router = useRouter();
     const [showSubMenu, setShowSubMenu] = useState(false);
     const [username, setUsername] = useState('');
+    const [didToken, setDidToken] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleSingOut = async e => {
+    const handleSignOut = async e => {
         e.preventDefault();
         try {
-            await magic.user.logout();
-            console.log(await magic.user.isLoggedIn()); // => `false`
+            const response = await fetch('/api/logout', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${didToken}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const res = await response.json();
+            console.log('🚀 ~ file: navbar.js ~ line 26 ~ Navbar ~ res', res);
         } catch (error) {
-            console.log(
-                '🚀 ~ file: navbar.js ~ line 19 ~ Navbar ~ error',
-                error
-            );
-        } finally {
+            console.error('Error logging out', error);
             router.push('/login');
         }
     };
-
     useEffect(() => {
         const getUserData = async () => {
             try {
+                setLoading(true);
                 const { email } = await magic.user.getMetadata();
+                const token = await magic.user.getIdToken();
                 if (email) {
+                    setLoading(false);
                     setUsername(email);
+                    setDidToken(token);
                 }
             } catch (error) {
+                setLoading(false);
                 console.log(
                     '🚀 ~ file: navbar.js ~ line 21 ~ useEffect ~ error',
                     error
@@ -41,6 +51,21 @@ export default function Navbar() {
         };
         getUserData();
     }, []);
+
+    const handleOnClickHome = e => {
+        e.preventDefault();
+        router.push('/');
+    };
+
+    const handleOnClickMyList = e => {
+        e.preventDefault();
+        router.push('/browse/my-list');
+    };
+
+    const handleShowDropdown = e => {
+        e.preventDefault();
+        setShowSubMenu(!showSubMenu);
+    };
     return (
         <div className={styles.container}>
             <div className={styles.wrapper}>
@@ -58,31 +83,38 @@ export default function Navbar() {
                 </Link>
 
                 <ul className={styles.navItems}>
-                    <li className={styles.navItem}>
-                        <Link href="/">
-                            <a>Home</a>
-                        </Link>
+                    <li className={styles.navItem} onClick={handleOnClickHome}>
+                        Home
                     </li>
-                    <li className={styles.navItem}>
-                        <Link href="/browse/my-list">
-                            <a>My List</a>
-                        </Link>
+                    <li
+                        className={styles.navItem}
+                        onClick={handleOnClickMyList}
+                    >
+                        My List
                     </li>
                 </ul>
                 <nav className={styles.navContainer}>
                     <div>
                         <button
                             className={styles.usernameBtn}
-                            onClick={() => setShowSubMenu(prev => !prev)}
+                            onClick={handleShowDropdown}
                         >
-                            <p className={styles.username}>{username}</p>
+                            <p className={styles.username}>
+                                {loading ? 'loading...' : username}
+                            </p>
+                            <Image
+                                src={'/static/expand_more.svg'}
+                                alt="Expand dropdown"
+                                width="24px"
+                                height="24px"
+                            />
                         </button>
                         {showSubMenu && (
                             <div className={styles.navDropdown}>
                                 <div>
                                     <a
                                         className={styles.linkName}
-                                        onClick={handleSingOut}
+                                        onClick={handleSignOut}
                                     >
                                         sign out
                                     </a>

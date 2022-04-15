@@ -11,3 +11,10 @@ export function setUserCookie(token, res) {
     });
     return res.setHeader('Set-Cookie', setterCookie);
 }
+export function clearUserCookie(res) {
+    const value = cookie.serialize('token', '', {
+        maxAge: -1,
+        path: '/',
+    });
+    return res.setHeader('Set-Cookie', value);
+}
