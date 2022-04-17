@@ -9,6 +9,7 @@ import {
     getWatchedItAgainVideos,
 } from '../utils/getVideos';
 import { verifyToken } from '../utils/verifyToken';
+import { motion } from 'framer-motion';
 
 export async function getServerSideProps(context) {
     const token = context.req ? context.req.cookies?.token : null;
@@ -37,7 +38,7 @@ export default function Home({
     watchedItAgain = [],
 }) {
     return (
-        <div className={styles.container}>
+        <motion.div exit={{ opacity: 0 }} className={styles.container}>
             <Head>
                 <title>NETFLIX</title>
             </Head>
@@ -77,6 +78,6 @@ export default function Home({
                     />
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

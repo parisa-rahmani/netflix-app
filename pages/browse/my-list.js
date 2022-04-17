@@ -4,6 +4,7 @@ import Navbar from '../../components/navbar/navbar';
 import styles from '../../styles/mylist.module.css';
 import { getMyListVideos } from '../../utils/getVideos';
 import { verifyToken } from '../../utils/verifyToken';
+import { motion } from 'framer-motion';
 
 export async function getServerSideProps(context) {
     const token = context.req ? context.req.cookies?.token : null;
@@ -19,7 +20,7 @@ export async function getServerSideProps(context) {
 
 export default function myList({ videos }) {
     return (
-        <div>
+        <motion.div exit={{ opacity: 0 }}>
             <Head>
                 <title>My List</title>
             </Head>
@@ -32,9 +33,10 @@ export default function myList({ videos }) {
                         size={'small'}
                         title="My List"
                         data={videos}
+                        withMotion={true}
                     />
                 </div>
             </main>
-        </div>
+        </motion.div>
     );
 }

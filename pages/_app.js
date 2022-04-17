@@ -1,8 +1,8 @@
 import '../styles/globals.css';
 import { useEffect, useState } from 'react';
-import { magic } from '../utils/magic-client';
 import { useRouter } from 'next/router';
 import Loading from '../components/loading/loading';
+import { AnimatePresence } from 'framer-motion';
 
 function MyApp({ Component, pageProps }) {
     const router = useRouter();
@@ -21,7 +21,13 @@ function MyApp({ Component, pageProps }) {
         };
     }, [router]);
 
-    return isLoading ? <Loading /> : <Component {...pageProps} />;
+    return isLoading ? (
+        <Loading />
+    ) : (
+        <AnimatePresence exitBeforeEnter>
+            <Component {...pageProps} key={router.route} />
+        </AnimatePresence>
+    );
 }
 
 export default MyApp;

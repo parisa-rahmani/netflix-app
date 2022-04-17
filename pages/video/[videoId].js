@@ -27,7 +27,6 @@ export async function getStaticPaths() {
 }
 
 export default function Video({ video }) {
-    console.log('🚀 ~ file: [videoId].js ~ line 30 ~ Video ~ video', video);
     const [toggleLike, setToggleLike] = useState(false);
     const [toggleDisLike, setToggleDisLike] = useState(false);
     const router = useRouter();
@@ -46,10 +45,6 @@ export default function Video({ video }) {
                 method: 'GET',
             });
             const result = await response.json();
-            console.log(
-                '🚀 ~ file: [videoId].js ~ line 48 ~ getVideo ~ data',
-                result
-            );
             if (result?.data?.length > 0) {
                 const favourited = result.data[0].favourited;
                 if (favourited === 1) {
