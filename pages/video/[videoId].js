@@ -69,7 +69,7 @@ export default function Video({ video }) {
                     favourited,
                 }),
             });
-            console.log(await response.json());
+            await response.json();
         } catch (error) {}
     };
 
@@ -79,7 +79,7 @@ export default function Video({ video }) {
 
         const val = !toggleDisLike;
         const favourited = val ? 0 : 1;
-        const response = await runRatingService(favourited);
+        await runRatingService(favourited);
     };
 
     const handleToggleLike = async () => {
@@ -88,7 +88,7 @@ export default function Video({ video }) {
         setToggleDisLike(toggleLike);
 
         const favourited = val ? 1 : 0;
-        const response = await runRatingService(favourited);
+        await runRatingService(favourited);
     };
     return (
         <div className={styles.container}>

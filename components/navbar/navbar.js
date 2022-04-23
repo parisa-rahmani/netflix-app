@@ -23,10 +23,8 @@ export default function Navbar() {
                 },
             });
 
-            const res = await response.json();
-            console.log('🚀 ~ file: navbar.js ~ line 26 ~ Navbar ~ res', res);
+            await response.json();
         } catch (error) {
-            console.error('Error logging out', error);
             router.push('/login');
         }
     };
@@ -43,10 +41,6 @@ export default function Navbar() {
                 }
             } catch (error) {
                 setLoading(false);
-                console.log(
-                    '🚀 ~ file: navbar.js ~ line 21 ~ useEffect ~ error',
-                    error
-                );
             }
         };
         getUserData();
