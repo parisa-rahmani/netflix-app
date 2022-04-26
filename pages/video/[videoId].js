@@ -100,7 +100,7 @@ export default function Video({ video }) {
                     width="640"
                     height="390"
                     src={`http://www.youtube.com/embed/${videoId}?enablejsapi=1&controls=0&origin=http://example.com`}
-                    frameborder="0"
+                    frameBorder="0"
                     className={styles.videoPlayer}
                 ></iframe>
 
