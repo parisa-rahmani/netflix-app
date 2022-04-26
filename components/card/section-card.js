@@ -45,7 +45,7 @@ export default function SectionCard({
                     shouldWrap && styles.wrapCards
                 }`}
             >
-                {data.map(item => {
+                {data.reverse().map(item => {
                     return (
                         <motion.div
                             key={item.id}

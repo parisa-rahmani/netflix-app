@@ -1,3 +1,5 @@
+.container {
+}
 .modal {
     position: absolute;
     /** centers modal **/
@@ -5,10 +7,10 @@
     right: 0;
     margin: 0 auto;
 
-    width: 800px;
+    max-width: 90vw;
     bottom: 40px;
     background-color: var(--black40);
-    top: 10%;
+    top: 20%;
 
     outline: none;
     border-radius: 10px;
@@ -38,11 +40,12 @@
 .videoPlayer {
     border-radius: 10px 10px 0px 0px;
     composes: borderBoxShadow;
+    width: 100%;
 }
 
 /** Modal body **/
 .modalBody {
-    padding: 0 3rem;
+    padding-bottom: 3rem;
 }
 
 .modalBodyContent {
@@ -115,10 +118,7 @@
 
 .likeDislikeBtnWrapper {
     display: flex;
-    margin-bottom: 0.75rem /* 12px */;
-    /* position: absolute; */
-    /* top: 100%; */
-    padding-left: 1rem /* 48px */;
+    margin: 0.75rem 0 /* 12px */;
     z-index: 9999;
 }
 

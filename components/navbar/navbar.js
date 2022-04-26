@@ -69,7 +69,8 @@ export default function Navbar() {
                             <Image
                                 src={'/static/netflix.svg'}
                                 alt="netflix"
-                                width={111}
+                                layout="responsive"
+                                width={100}
                                 height={30}
                             />
                         </div>

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import styles from './banner.module.css';
 
-const Banner = ({ title, subTitle, imgUrl, videoId }) => {
+const Banner = ({ title, imgUrl, videoId }) => {
     const router = useRouter();
 
     const handleOnPlay = () => {
@@ -17,8 +17,6 @@ const Banner = ({ title, subTitle, imgUrl, videoId }) => {
                         <p className={styles.series}>S E R I E S</p>
                     </div>
                     <h3 className={styles.title}>{title}</h3>
-                    <h3 className={styles.subTitle}>{subTitle}</h3>
-
                     <div className={styles.playBtnWrapper}>
                         <button
                             className={styles.btnWithIcon}
