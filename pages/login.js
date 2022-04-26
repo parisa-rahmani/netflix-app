@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 import styles from '../styles/login.module.css';
 import { useRouter } from 'next/router';
-import { magic } from '../utils/magic-client';
+import { magic } from '../lib/magic-client';
 
 export default function Login() {
     const [userMsg, setUserMsg] = useState('');

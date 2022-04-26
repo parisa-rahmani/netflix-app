@@ -2,29 +2,39 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../styles/video.module.css';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/navbar/navbar';
-import { getVideoById } from '../../utils/getVideos';
+import { getVideoById } from '../../lib/getVideos';
 import Like from '../../components/icons/like';
 import DisLike from '../../components/icons/dislike';
+import { verifyToken } from '../../lib/verifyToken';
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
+    const token = context.req ? context.req.cookies?.token : null;
+    const userId = await verifyToken(token);
+    if (!userId) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        };
+    }
     const videoArray = await getVideoById(context.params.videoId);
 
     return {
         props: {
             video: videoArray.length > 0 ? videoArray[0] : {},
         },
-        revalidate: 10, // In seconds
     };
 }
 
-export async function getStaticPaths() {
-    const videos = ['mYfJxlgR2jw', '4zH5iYM4wJo', 'KCPEHsAViiQ'];
-    const paths = videos.map(videoId => ({
-        params: { videoId },
-    }));
+// export async function getStaticPaths() {
+//     const videos = ['mYfJxlgR2jw', '4zH5iYM4wJo', 'KCPEHsAViiQ'];
+//     const paths = videos.map(videoId => ({
+//         params: { videoId },
+//     }));
 
-    return { paths, fallback: 'blocking' };
-}
+//     return { paths, fallback: true };
+// }
 
 export default function Video({ video }) {
     const [toggleLike, setToggleLike] = useState(false);

@@ -8,13 +8,23 @@ import {
     getPopularVideos,
     getWatchedItAgainVideos,
     getVideoById,
-} from '../utils/getVideos';
-import { verifyToken } from '../utils/verifyToken';
+} from '../lib/getVideos';
+import { verifyToken } from '../lib/verifyToken';
 import { motion } from 'framer-motion';
 
 export async function getServerSideProps(context) {
     const token = context.req ? context.req.cookies?.token : null;
     const userId = await verifyToken(token);
+    if (!userId) {
+        return {
+            props: {},
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        };
+    }
+
     const disneyVideos = await getVideos('disney trailers');
     const travelVideos = await getVideos('travel');
     const productivityVideos = await getVideos('productivity');
@@ -76,7 +86,7 @@ export default function Home({
                     <SectionCard
                         title="Watch It Again"
                         size={'small'}
-                        data={watchedItAgain}
+                        data={watchedItAgain.reverse()}
                     />
                     <SectionCard
                         title="Travel"

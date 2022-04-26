@@ -1,5 +1,5 @@
-import { magicAdmin } from '../../utils/magic-server';
-import { clearUserCookie } from '../../utils/cookies';
+import { magicAdmin } from '../../lib/magic-server';
+import { clearUserCookie } from '../../lib/cookies';
 
 export default async function logout(req, res) {
     if (req.method === 'POST') {
