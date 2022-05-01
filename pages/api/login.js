@@ -10,7 +10,6 @@ export default async function login(req, res) {
             // token is after 7 char rhan bearer
             const didToken = auth ? auth.substr(7) : '';
             // invoke magic
-            await magicAdmin.token.validate(didToken);
             const metaData = await magicAdmin.users.getMetadataByToken(
                 didToken
             );
@@ -26,8 +25,7 @@ export default async function login(req, res) {
                         'x-hasura-user-id': `${metaData.issuer}`,
                     },
                 },
-                process.env.JWT_SECRET,
-                { algorithm: 'HS256' }
+                process.env.JWT_SECRET
             );
 
             const isNewUserQuery = await isNewUser(token, metaData);
