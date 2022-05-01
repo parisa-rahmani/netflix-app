@@ -53,13 +53,12 @@ export default function Login() {
                         router.push('/');
                     } else {
                         setIsLoading(false);
-                        console.error('Something went wrong logging in', error);
                         setUserMsg('something went wrong logging in!');
                     }
                 }
             } catch (error) {
                 setIsLoading(false);
-                setUserMsg('Enter a valid email address');
+                console.error('Something went wrong logging in', error);
             }
         } else {
             setUserMsg('Email is required!');
