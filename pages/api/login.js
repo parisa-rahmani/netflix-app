@@ -34,9 +34,9 @@ export default async function login(req, res) {
             // set cookie
             setUserCookie(token, res);
 
-            res.send({ success: true });
+            res.status(200).send({ success: true });
         } catch (error) {
-            res.status(500).send({ success: false });
+            res.status(500).send({ success: false, error });
         }
     } else {
         res.send({ success: false, msg: 'something went wrong' });
