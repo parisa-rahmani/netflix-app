@@ -10,6 +10,7 @@ export default async function login(req, res) {
             // token is after 7 char rhan bearer
             const didToken = auth ? auth.substr(7) : '';
             // invoke magic
+            await magicAdmin.token.validate(didToken);
             const metaData = await magicAdmin.users.getMetadataByToken(
                 didToken
             );
