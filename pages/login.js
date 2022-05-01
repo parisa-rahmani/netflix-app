@@ -53,6 +53,7 @@ export default function Login() {
                         router.push('/');
                     } else {
                         setIsLoading(false);
+                        console.error('Something went wrong logging in', error);
                         setUserMsg('something went wrong logging in!');
                     }
                 }
