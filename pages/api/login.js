@@ -25,7 +25,8 @@ export default async function login(req, res) {
                         'x-hasura-user-id': `${metaData.issuer}`,
                     },
                 },
-                process.env.JWT_SECRET
+                process.env.JWT_SECRET,
+                { algorithm: 'HS256' }
             );
 
             const isNewUserQuery = await isNewUser(token, metaData);
