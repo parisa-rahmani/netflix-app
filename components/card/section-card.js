@@ -45,7 +45,7 @@ export default function SectionCard({
                     shouldWrap && styles.wrapCards
                 }`}
             >
-                {data.length ? (
+                {data.length > 0 ? (
                     data.map(item => {
                         return (
                             <motion.div
@@ -65,7 +65,7 @@ export default function SectionCard({
                         );
                     })
                 ) : (
-                    <div>your liked video's shown here.</div>
+                    <div>your liked videos shown here.</div>
                 )}
             </motion.div>
         </section>
