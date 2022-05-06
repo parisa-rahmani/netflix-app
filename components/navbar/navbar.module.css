@@ -132,6 +132,7 @@
     .navItem {
         margin-right: 1.25rem /* 20px */;
         font-size: 1.1rem;
+        margin-bottom: 0;
     }
     .logoWrapper {
         width: 8rem /* 128px */;

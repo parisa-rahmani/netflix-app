@@ -64,8 +64,10 @@ export default function SectionCard({
                             </motion.div>
                         );
                     })
-                ) : (
+                ) : title === 'Watch It Again' ? (
                     <div>your liked videos shown here.</div>
+                ) : (
+                    <div>data not found!, please try again later.</div>
                 )}
             </motion.div>
         </section>
