@@ -45,24 +45,28 @@ export default function SectionCard({
                     shouldWrap && styles.wrapCards
                 }`}
             >
-                {data.map(item => {
-                    return (
-                        <motion.div
-                            key={item.id}
-                            variants={withMotion && fadeInUp}
-                        >
-                            <Link href={`/video/${item.id}`} key={item.id}>
-                                <a>
-                                    <Card
-                                        imgUrl={item.imgUrl}
-                                        size={size}
-                                        shouldScale={shouldScale}
-                                    />
-                                </a>
-                            </Link>
-                        </motion.div>
-                    );
-                })}
+                {data.length ? (
+                    data.map(item => {
+                        return (
+                            <motion.div
+                                key={item.id}
+                                variants={withMotion && fadeInUp}
+                            >
+                                <Link href={`/video/${item.id}`} key={item.id}>
+                                    <a>
+                                        <Card
+                                            imgUrl={item.imgUrl}
+                                            size={size}
+                                            shouldScale={shouldScale}
+                                        />
+                                    </a>
+                                </Link>
+                            </motion.div>
+                        );
+                    })
+                ) : (
+                    <div>your liked video's shown here.</div>
+                )}
             </motion.div>
         </section>
     );
